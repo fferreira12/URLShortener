@@ -20,12 +20,18 @@
     //var_dump($short);
     $query = "INSERT INTO `url` (`original_url`) VALUES ('{$url}');";
     //echo $query;
-    $result = mysqli_query($conn, $query);
+    $result = mysqli_query($conn, $query);  
     //var_dump($result);
     if($result) {
       return mysqli_insert_id($conn);
     } else {
-      return null;
+      $query = "SELECT `id` FROM `url` WHERE `original_url` = '{$url}';";
+      $result = mysqli_query($conn, $query); 
+      if($result) {
+        return mysqli_fetch_row ($result)[0];
+      } else {
+        return null;
+      }
     }
   }
 
