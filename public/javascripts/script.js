@@ -59,12 +59,12 @@ function updateWindow(worked) {
 		var p = $("#resultPara");
 		if(p.length > 0) {
 			p.text("Try inserting again or try another URL");
-			console.log(p);
+			//console.log(p);
 			p.insertAfter(title);
 		} else {
 			p = $("p").text("Try inserting again or try another URL");
 			p.attr("id", "resultPara");
-			console.log(p);
+			//console.log(p);
 			p.insertAfter(title);
 		}
 	}
