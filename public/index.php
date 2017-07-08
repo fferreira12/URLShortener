@@ -37,6 +37,14 @@ if($_GET && isset($_GET['u'])) {
     </br>
       <input class="wideBtn" type="button" name="submit" value="Shorten it" onclick="postNewUrlAJAX();">
     </form>
+
+    <?php 
+      $last = read_cookie_last_url();
+      if(isset($last)) {
+        echo "<p class=\"info\" id='lastUrl'>The last URL you shortened was {$last[0]}. <br/> The shortened URL is <a href=\"http://localhost/URLShortener/public?u={$last[1]}\">http://localhost/URLShortener/public?u={$last[1]}</a>";
+      }
+    ?>
+
   </div>
 
 </body>

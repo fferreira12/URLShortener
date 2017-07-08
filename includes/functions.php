@@ -8,6 +8,18 @@
     return $connection;
   }
 
+  function save_cookie_last_url ($url, $id) {
+    setcookie("last_url", $url, time() + (7*24*60*60));
+    setcookie("last_id", $id, time() + (7*24*60*60));
+  }
+
+  function read_cookie_last_url() {
+    if(isset($_COOKIE["last_url"]) && isset($_COOKIE["last_id"])) {
+      return array($_COOKIE["last_url"], $_COOKIE["last_id"]);
+    } else {
+      return null;
+    }
+  } 
   // function get_next_short() {
   //   //to be improved
   //   return (string) time();
@@ -23,12 +35,16 @@
     $result = mysqli_query($conn, $query);  
     //var_dump($result);
     if($result) {
-      return mysqli_insert_id($conn);
+      $id = mysqli_insert_id($conn);
+      save_cookie_last_url($url, $id);
+      return $id;
     } else {
       $query = "SELECT `id` FROM `url` WHERE `original_url` = '{$url}';";
       $result = mysqli_query($conn, $query); 
       if($result) {
-        return mysqli_fetch_row ($result)[0];
+        $id = mysqli_fetch_row($result)[0];
+        save_cookie_last_url($url, $id);
+        return $id;
       } else {
         return null;
       }
@@ -51,6 +67,7 @@
     }
 
   }
+
 
 
 ?>
