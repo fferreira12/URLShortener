@@ -9,58 +9,63 @@ function postNewUrlAJAX() {
 	}, 
 	function (data, status) {
 		//document.write("data: " + data);
-		var title = document.getElementById("mainTitle");
-		var form = document.getElementById("form");
+		var title = $("#mainTitle");
 
-		var central = document.getElementById("central");
+		var form = $("#form");
+
+		var central = $("#central");
 
 		if(isNaN(data) || Number(data) == 0) {
-			title.innerHTML = "Fail";
-			var txt = document.createTextNode("Try inserting again or try another URL");
-
-			var p = document.createElement("p");
-			p.setAttribute("id", "resultPara")
-
-			p.appendChild(txt);
-
-			central.insertBefore(p, central.childNodes[2]);
-
+			updateWindow(false);
 		} else {
-			title.innerHTML = "Sucess";
-			form.style.display = 'none';
-			
+			updateWindow(true);
 			var shortUrl = "http://localhost/urlshortener/public?u=" + data;
-
-
-			var a = document.createElement("a");
-			a.setAttribute('href',shortUrl);
-			a.innerHTML = shortUrl;
-			
-			var txt = document.createTextNode("Your shortened URL is: ");
-
-			var p = document.createElement("p");
-			p.setAttribute("id", "resultPara")
-			p.appendChild(txt);
-			p.appendChild(a);
-
-			central.appendChild(p);
-
+			var a = $("<a></a>");
+			a.attr('href',shortUrl);
+			a.text(shortUrl);
+			var p = $("#resultPara")
+			p.append(a);
+			p.insertAfter(title);
 		}
 
-		var lastUrl = $("#lastUrl");
-		lastUrl.hide();
-		//alert("none was called");
-
-		var back = $('<input/>');
-		back.attr({ class: "wideBtn", type: 'button', name:'backButton', value:'Back'});
-
-		back.click(backToMainPage);
 		
-		$("#resultPara").after(back);
 
 	});
 }
 
 function backToMainPage() {
 	$('body').load( "index.php" );
+}
+
+function updateWindow(worked) {
+	var title = $("#mainTitle");
+	//console.log(title);
+	var form = $("#form");
+	var central = $("#central");
+
+	if(worked) {
+		title.html("Sucess");
+		var p = $("#resultPara");
+		if(p.length > 0) {
+			p.text("Your shortened URL is: ");
+		} else {
+			p = $("<p></p>").text("Your shortened URL is: ");
+			p.attr("id", "resultPara");
+			p.insertAfter(title);
+		}
+
+	} else {
+		title.html("Fail");
+		var p = $("#resultPara");
+		if(p.length > 0) {
+			p.text("Try inserting again or try another URL");
+			console.log(p);
+			p.insertAfter(title);
+		} else {
+			p = $("p").text("Try inserting again or try another URL");
+			p.attr("id", "resultPara");
+			console.log(p);
+			p.insertAfter(title);
+		}
+	}
 }
