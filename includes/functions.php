@@ -20,6 +20,7 @@
       return null;
     }
   } 
+  
   // function get_next_short() {
   //   //to be improved
   //   return (string) time();
@@ -27,9 +28,11 @@
 
   function insert_url($url) {
     global $conn;
-    //var_dump($conn);
-    //$short = get_next_short();
-    //var_dump($short);
+    
+    if(!filter_var($url, FILTER_VALIDATE_URL)){
+      return null;
+    }
+
     $query = "INSERT INTO `url` (`original_url`) VALUES ('{$url}');";
     //echo $query;
     $result = mysqli_query($conn, $query);  
